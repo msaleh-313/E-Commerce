@@ -1,0 +1,31 @@
+<!-- app/views/products/index.html.erb -->
+<section class="text-gray-600 body-font">
+  <div class="container px-5 mx-auto">
+    <div class="flex flex-wrap -m-4">
+      <% @categories.each do |category| %>
+        <div class="lg:w-1/4 md:w-1/2 p-4 transition duration-300 ease-in-out transform hover:scale-105">
+          <a href="<%= category_path(category) %>" class="block">
+            <div class="bg-white rounded-lg overflow-hidden shadow-md">
+              <div class="block relative h-48 overflow-hidden">
+                <%= image_tag("https://dummyimage.com/420x260", class: "object-cover object-center w-full h-full block rotate-360", alt: "Product Image") %>
+              </div>
+              <div class="p-4">
+                <h3 class="text-gray-500 text-xs tracking-widest title-font mb-1"><%= category.name %></h3>
+                
+              </div>
+            </div>
+          </a>
+          <div class="mt-4 flex">
+            <%= button_to "Edit", edit_category_path(category), method: :get, class: "inline-flex items-center justify-center px-6 py-2 border border-transparent text-base font-medium rounded-md text-white bg-indigo-500 hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 mr-2" %>
+            <%= button_to "Delete", category_path(category), method: :delete, data: { confirm: "Are you Sure?" }, class: "inline-flex items-center justify-center px-6 py-2 border border-transparent text-base font-medium rounded-md text-white bg-red-500 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"%>
+          </div>     
+        </div>
+      <% end %>
+    </div>
+  </div>
+</section>
+
+
+
+
+

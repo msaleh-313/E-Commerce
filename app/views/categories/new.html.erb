@@ -1,0 +1,40 @@
+<section class="text-gray-600 body-font bg-gray-100">
+  <div class="container px-5 py-24 mx-auto flex flex-wrap flex-col justify-center items-center">
+    <div class="flex mx-auto flex-wrap">
+      <h1 class="text-xl font-medium title-font text-gray-900">New Category</h1>
+    </div>
+
+    <div id="category-form-container" class="mt-8">
+      <%= form_with(model: @category, url: categories_path, method: "post", html: { class: "mx-auto" }) do |form| %>
+
+        <!-- CSRF Token -->
+        <%= form.hidden_field :authenticity_token, value: form_authenticity_token %>
+
+        <!-- Category Name -->
+        <div class="mb-4">
+          <%= form.label :name, class: "block text-sm font-medium text-gray-700" %>
+          <%= form.text_field :name, class: "block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" %>
+        </div>
+
+        <!-- Buttons -->
+        <div class="mt-4 flex">
+          <%= button_to "Create Category", categories_path, method: :post, class: "inline-flex items-center justify-center px-6 py-2 border border-transparent text-base font-medium rounded-md text-white bg-indigo-500 hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 mr-2" %>
+          
+
+          <%= link_to "Cancel", categories_path, class: "inline-flex items-center justify-center px-6 py-2 border border-gray-300 text-base font-medium rounded-md text-gray-700 bg-white hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500" %>
+        </div>
+
+      <% end %>
+    </div>
+  </div>
+</section>
+<% if @category.errors.any? %>
+  <div id="error_explanation">
+    <h2><%= pluralize(@category.errors.count, "error") %> prohibited this category from being saved:</h2>
+    <ul>
+      <% @category.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>

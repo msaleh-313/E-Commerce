@@ -13,7 +13,7 @@ Rails.application.routes.draw do
   #  get 'products/:id', to: 'products#show', as: 'product'
   resources :products
 
-  resources :categories, only: [:index] # Adjust with other necessary routes
+  resources :categories # Adjust with other necessary routes
 
 
 
