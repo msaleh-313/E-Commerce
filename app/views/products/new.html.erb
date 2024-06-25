@@ -1,0 +1,132 @@
+
+
+
+
+<section class="text-gray-600 body-font">
+  <div class="container px-5 py-24 mx-auto flex flex-wrap flex-col">
+    <div class="flex mx-auto flex-wrap mb-20">
+      <h1 class="text-xl font-medium title-font mb-4 text-gray-900">Create Your Product</h1>
+    </div>
+
+    <div id="product-form-container">
+      <form action="/products" method="post">
+        <!-- CSRF Token -->
+        <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+
+        <!-- Step 1: Select Category -->
+        <div id="step-1" class="step active">
+          <h2>Step 1: Select Category</h2>
+          <select name="product[category_id]" id="category-select" class="block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+            <option value="" disabled selected>Select a category</option>
+          </select>
+          <div class="actions mt-4">
+            <button id="next-step1" type="button" class="btn-indigo">Next</button>
+          </div>
+        </div>
+
+        <!-- Step 2: Product Details -->
+        <div id="step-2" class="step hidden">
+          <h2>Step 2: Product Details</h2>
+          <input type="text" name="product[name]" id="product-name" class="block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Product Name">
+          <textarea name="product[description]" id="product-description" class="block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Product Description"></textarea>
+          <div class="actions mt-4">
+            <button id="prev-step2" type="button" class="btn-gray mr-2">Previous</button>
+            <button id="next-step2" type="button" class="btn-indigo">Next</button>
+          </div>
+        </div>
+
+        <!-- Step 3: Price -->
+        <div id="step-3" class="step hidden">
+          <h2>Step 3: Price</h2>
+          <input type="number" name="product[price]" id="product-price" class="block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Price">
+          <div class="actions mt-4">
+            <button id="prev-step3" type="button" class="btn-gray mr-2">Previous</button>
+            <button id="submit-button" type="submit" class="btn-indigo">Submit</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const categorySelect = document.getElementById('category-select');
+    const nextStep1 = document.getElementById('next-step1');
+    const nextStep2 = document.getElementById('next-step2');
+    const prevStep2 = document.getElementById('prev-step2');
+    const prevStep3 = document.getElementById('prev-step3');
+    const submitButton = document.getElementById('submit-button');
+    const steps = document.querySelectorAll('.step');
+    let currentStep = 0;
+
+    // Function to populate categories dropdown
+    function populateCategories() {
+      fetch('/categories') // Adjust the route to match your Rails route for fetching categories
+        .then(response => response.json())
+        .then(data => {
+          // Clear any existing options
+          categorySelect.innerHTML = '';
+
+          // Add the placeholder option
+          const placeholderOption = document.createElement('option');
+          placeholderOption.value = '';
+          placeholderOption.disabled = true;
+          placeholderOption.selected = true;
+          placeholderOption.textContent = 'Select a category';
+          categorySelect.appendChild(placeholderOption);
+
+          // Add categories fetched from the server
+          data.forEach(category => {
+            const option = document.createElement('option');
+            option.value = category.id;
+            option.textContent = category.name;
+            categorySelect.appendChild(option);
+          });
+        })
+        .catch(error => console.error('Error fetching categories:', error));
+    }
+
+    // Function to show current step and hide others
+    function showStep(stepIndex) {
+      steps.forEach((step, index) => {
+        if (index === stepIndex) {
+          step.classList.remove('hidden');
+          step.classList.add('active');
+        } else {
+          step.classList.add('hidden');
+          step.classList.remove('active');
+        }
+      });
+    }
+
+    // Initial setup
+    populateCategories();
+
+    // Step navigation event listeners
+    nextStep1.addEventListener('click', function() {
+      currentStep = 1;
+      showStep(currentStep);
+    });
+
+    nextStep2.addEventListener('click', function() {
+      currentStep = 2;
+      showStep(currentStep);
+    });
+
+    prevStep2.addEventListener('click', function() {
+      currentStep = 0;
+      showStep(currentStep);
+    });
+
+    prevStep3.addEventListener('click', function() {
+      currentStep = 1;
+      showStep(currentStep);
+    });
+
+    submitButton.addEventListener('click', function() {
+      // Handle form submission here
+      alert('Product added successfully!');
+    });
+  });
+</script>
